@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, Passport passport) {
-        userRepository.updateUser(id, passport);
+    public void updateUser(String email, Passport passport) {
+        userRepository.updateUser(email, passport);
     }
 
     @Override

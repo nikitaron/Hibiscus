@@ -39,4 +39,7 @@ public class CardAccount {
     @JoinColumn(name = "account_id")
     @ToString.Exclude
     private Set<Card> cards = new HashSet<>();
+
+    @Column(name = "user_id")
+    private Long userId;
 }

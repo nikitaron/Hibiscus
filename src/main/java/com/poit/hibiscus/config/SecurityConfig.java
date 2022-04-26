@@ -3,6 +3,7 @@ package com.poit.hibiscus.config;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,13 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+            .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/signup", "/") //probably need to add css/js/html paths later
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+                    .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
+                    .anyRequest().authenticated()
+            .and()
                 .httpBasic();
     }
 
@@ -50,3 +49,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 }
+

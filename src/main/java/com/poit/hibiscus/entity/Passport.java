@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "passports")
@@ -24,7 +25,7 @@ public class Passport {
     private SNS sns;
 
     @Column(name = "dob")
-    private Timestamp dob;
+    private LocalDateTime dob;
 
     @Column(name = "identity_code")
     private String identityCode;

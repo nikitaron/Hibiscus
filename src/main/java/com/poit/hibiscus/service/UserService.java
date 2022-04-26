@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
     void saveUser(User user);
-    void updateUser(Long id, Passport passport);
+    void updateUser(String email, Passport passport);
     User findUserById(Long id);
     User findUserByEmail(String email);
     List<User> getUsers();

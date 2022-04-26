@@ -31,4 +31,10 @@ public class Card {
 
     @Column(name = "expiration_time")
     private LocalDateTime expirationTime;
+
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "account_id")
+    private Long accountId;
 }

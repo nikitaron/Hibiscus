@@ -6,11 +6,11 @@ import com.poit.hibiscus.entity.Card;
 import com.poit.hibiscus.service.AccountService;
 import com.poit.hibiscus.service.CardService;
 import com.poit.hibiscus.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/cards")
+@RequestMapping("/api/v1/cards/")
 public class CardController {
 
     private final CardService cardService;
@@ -28,9 +28,26 @@ public class CardController {
     private final AccountService accountService;
 
     @PostMapping("new")
-    public ResponseEntity<Void> createCard(@RequestBody CardDto cardDto, @RequestBody AccountDto accountDto) {
-        cardService.createCard(conversionService.convert(cardDto, Card.class), accountDto);
+    public ResponseEntity<CardDto> createCard(
+            @RequestBody AccountCardWrapper accountCardWrapper,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        var card = conversionService.convert(accountCardWrapper.getCardDto(), Card.class);
+        var accountId = accountService.findByIban(accountCardWrapper.getAccountDto().getIban()).getId();
+        var userId =  userService.findUserByEmail(userDetails.getUsername()).getId();
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                conversionService.convert(cardService.createCard(card, accountId, userId), CardDto.class),
+                HttpStatus.CREATED
+        );
     }
+}
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+class AccountCardWrapper {
+    private AccountDto accountDto;
+    private CardDto cardDto;
 }

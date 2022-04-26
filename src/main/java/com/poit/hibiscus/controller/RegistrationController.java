@@ -10,7 +10,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/account/")
@@ -22,18 +30,21 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("signup")
-    public ResponseEntity<String> signUp(@RequestBody UserDto userDto) {
+    public ResponseEntity<Void> signUp(@RequestBody UserDto userDto) {
         User user = conversionService.convert(userDto, User.class);
         registrationService.saveUser(user);
-        return new ResponseEntity<>("You were successfully signed up", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("passport/{id}")
-    public ResponseEntity<String> passportData(@PathVariable("id") Long id, @RequestBody PassportDto passportDto) {
+    @PostMapping("passport")
+    public ResponseEntity<Void> passportData(
+            @RequestBody PassportDto passportDto,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
         var passport = conversionService.convert(passportDto, Passport.class);
         registrationService.savePassport(passport);
-        userService.updateUser(id, passport);
+        userService.updateUser(userDetails.getUsername(), passport);
 
-        return new ResponseEntity<>("Your passport was successfully accepted", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

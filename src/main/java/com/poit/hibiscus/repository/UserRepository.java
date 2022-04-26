@@ -8,16 +8,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long id);
+
     Optional<User> findByEmail(String email);
+
     List<User> findAll();
 
     @Modifying
-    @Query("UPDATE User u SET u.passport = :passport WHERE u.id = :id")
-    void updateUser(@Param("id") Long id, @Param("passport")Passport passport);
+    @Transactional
+    @Query("UPDATE User u SET u.passport = :passport WHERE u.email = :email")
+    void updateUser(@Param("email") String email, @Param("passport") Passport passport);
 }

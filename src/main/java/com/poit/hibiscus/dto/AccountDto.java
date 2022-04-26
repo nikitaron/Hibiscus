@@ -21,7 +21,7 @@ public class AccountDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal money;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     private String iban;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

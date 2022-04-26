@@ -1,5 +1,6 @@
 package com.poit.hibiscus.service.impl;
 
+import com.poit.hibiscus.entity.Card;
 import com.poit.hibiscus.entity.CardAccount;
 import com.poit.hibiscus.entity.CurrencyType;
 import com.poit.hibiscus.repository.AccountRepository;
@@ -7,6 +8,7 @@ import com.poit.hibiscus.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 
 @Service
@@ -16,7 +18,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
 
     @Override
-    public CardAccount createAccount(CardAccount cardAccount) {
+    public CardAccount createAccount(CardAccount cardAccount, Long userId) {
 
         long accountNum = (long) (1000_0000_0000_0000L + Math.random() * (Long.MAX_VALUE / 1000L));
         int randomBalanceNum = (int) (1000 + Math.random() * 9999);
@@ -28,6 +30,7 @@ public class AccountServiceImpl implements AccountService {
                 .money(BigDecimal.ZERO)
                 .number(String.valueOf(accountNum))
                 .iban(iban)
+                .userId(userId)
                 .build();
 
         return accountRepository.save(newCardAccount);
@@ -37,4 +40,11 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(Long id) {
         accountRepository.deleteById(id);
     }
+
+    @Override
+    public CardAccount findByIban(String iban) {
+        return accountRepository.findByIban(iban).orElseThrow(EntityNotFoundException::new);
+    }
+
+
 }

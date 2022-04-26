@@ -23,10 +23,11 @@ CREATE TABLE if not exists users
 CREATE TABLE if not exists card_accounts
 (
     id            BIGSERIAL PRIMARY KEY,
-    money         DECIMAL     NOT NULL,
-    iban          VARCHAR(28) NOT NULL,
-    number        VARCHAR(15) NOT NULL,
-    currency_type VARCHAR(4)  NOT NULL
+    money         DECIMAL                      NOT NULL,
+    iban          VARCHAR(28)                  NOT NULL,
+    number        VARCHAR(15)                  NOT NULL,
+    currency_type VARCHAR(4)                   NOT NULL,
+    user_id       BIGINT REFERENCES users (id) NOT NULL
 );
 CREATE TABLE if not exists cards
 (
@@ -44,7 +45,7 @@ CREATE TABLE if not exists holdings
     id            BIGSERIAL PRIMARY KEY,
     issuance_date TIMESTAMP  NOT NULL,
     amount        DECIMAL    NOT NULL,
-    percentage    FLOAT      NOT NULL,
+    percentage    DECIMAL    NOT NULL,
     currency_type VARCHAR(4) NOT NULL,
     passport_id   BIGINT REFERENCES passports (id)
 );
