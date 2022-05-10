@@ -18,7 +18,12 @@ public class LayoutController {
         return "signIn";
     }
 
-    @GetMapping("mainPage")
+    @GetMapping("passport-attachment")
+    public String getPassportPage() {
+        return "passportPage";
+    }
+
+    @GetMapping("main-page")
     public String getMainPage() {
         return "mainPage";
     }

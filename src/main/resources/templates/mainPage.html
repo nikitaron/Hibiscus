@@ -48,33 +48,37 @@
   const elements = document.getElementsByClassName("menu-link");
 
   fetch("/api/v1/users/passport")
-    .then(data => data.json())
-    .then(passport => {
-      const tempElem = document.querySelector("#mainp");
-      let newElem = document.createElement('p');
-      newElem.innerHTML = passport.identityCode;
-      tempElem.after(newElem);
+  .then(data => {
+    console.log(data.json());
+    return data.json()
+  })
+  .then(passport => {
+    console.log(passport);
+    const tempElem = document.querySelector("#mainp");
+    let newElem = document.createElement('p');
+    newElem.innerHTML = passport.identityCode;
+    tempElem.after(newElem);
 
-      newElem = document.createElement('p');
-      newElem.innerHTML = passport.identityCode;
-      tempElem.after(newElem);
+    newElem = document.createElement('p');
+    newElem.innerHTML = passport.identityCode;
+    tempElem.after(newElem);
 
-      newElem = document.createElement('p');
-      newElem.innerHTML = passport.dob;
-      tempElem.after(newElem);
+    newElem = document.createElement('p');
+    newElem.innerHTML = passport.dob;
+    tempElem.after(newElem);
 
-      newElem = document.createElement('p');
-      newElem.innerHTML = passport.sns.name;
-      tempElem.after(newElem);
+    newElem = document.createElement('p');
+    newElem.innerHTML = passport.sns.name;
+    tempElem.after(newElem);
 
-      newElem = document.createElement('p');
-      newElem.innerHTML = passport.sns.surname;
-      tempElem.after(newElem);
+    newElem = document.createElement('p');
+    newElem.innerHTML = passport.sns.surname;
+    tempElem.after(newElem);
 
-      newElem = document.createElement('p');
-      newElem.innerHTML = passport.sns.succession;
-      tempElem.after(newElem);
-    })
+    newElem = document.createElement('p');
+    newElem.innerHTML = passport.sns.succession;
+    tempElem.after(newElem);
+  });
 
   function onClick(event) {
     for (let i = 0; i < elements.length; i++) {

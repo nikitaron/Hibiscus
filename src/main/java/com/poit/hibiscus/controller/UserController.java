@@ -31,6 +31,7 @@ public class UserController {
 
     @GetMapping("passport")
     public PassportDto getPassport(@AuthenticationPrincipal UserDetails userDetails) {
-        return conversionService.convert(userService.findUserByEmail(userDetails.getUsername()), PassportDto.class);
+        var temp = conversionService.convert(userService.findUserByEmail(userDetails.getUsername()).getPassport(), PassportDto.class);
+        return temp;
     }
 }

@@ -21,6 +21,7 @@ h1 {
 
 .menu {
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
   padding: 0;
   text-transform: uppercase;
@@ -81,6 +82,16 @@ h1 {
 .panel {
   min-width: 85vw;
   min-height: 85vh;
+}
+
+.panel p {
+  font-size: 3em;
+  text-align: center;
+  color: #000000;
+  font-weight: 100;
+  text-transform: capitalize;
+  letter-spacing: 4px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .panel button {
