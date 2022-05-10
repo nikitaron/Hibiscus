@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link href="../static/style/mainStyle.css" th:href="@{/style/mainStyle.css}" rel="stylesheet"
+        type="text/css" media="all"/>
+  <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+</head>
+<body>
+<header>
+  <ul class="menu">
+    <li><a class="menu-link" href="#mainp">Main</a></li>
+    <li><a class="menu-link" href="#cards">Cards</a></li>
+    <li><a class="menu-link" href="#accounts">Accounts</a></li>
+    <li><a class="menu-link" href="#credits">Credits</a></li>
+    <li><a class="menu-link" href="#holdings">Holdings</a></li>
+    <li><a class="menu-link" href="#transactions">Transactions</a></li>
+  </ul>
+</header>
+<div class="work-panel">
+  <div class="slider-track">
+    <div class="panel">
+      <h1 id="mainp">Main</h1>
+      <button>SIGNOUT</button>
+    </div>
+    <div class="panel">
+      <h1 id="cards">Cards</h1>
+    </div>
+    <div class="panel">
+      <h1 id="accounts">Accounts</h1>
+      <button>CREATEACCOUNT</button>
+    </div>
+    <div class="panel">
+      <h1 id="credits">Credits</h1>
+    </div>
+    <div class="panel">
+      <h1 id="holdings">Holdings</h1>
+    </div>
+    <div class="panel">
+      <h1 id="transactions">Transactions</h1>
+    </div>
+  </div>
+</div>
+</body>
+<script type="application/x-javascript">
+  const elements = document.getElementsByClassName("menu-link");
+
+  fetch("/api/v1/users/passport")
+    .then(data => data.json())
+    .then(passport => {
+      const tempElem = document.querySelector("#mainp");
+      let newElem = document.createElement('p');
+      newElem.innerHTML = passport.identityCode;
+      tempElem.after(newElem);
+
+      newElem = document.createElement('p');
+      newElem.innerHTML = passport.identityCode;
+      tempElem.after(newElem);
+
+      newElem = document.createElement('p');
+      newElem.innerHTML = passport.dob;
+      tempElem.after(newElem);
+
+      newElem = document.createElement('p');
+      newElem.innerHTML = passport.sns.name;
+      tempElem.after(newElem);
+
+      newElem = document.createElement('p');
+      newElem.innerHTML = passport.sns.surname;
+      tempElem.after(newElem);
+
+      newElem = document.createElement('p');
+      newElem.innerHTML = passport.sns.succession;
+      tempElem.after(newElem);
+    })
+
+  function onClick(event) {
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].style.borderStyle = "none";
+      elements[i].style.borderWidth = "0 0 0 0";
+    }
+
+    const menuElem = event.currentTarget;
+    menuElem.style.borderBottomColor = "white";
+    menuElem.style.borderStyle = "solid";
+    menuElem.style.borderWidth = "0 0 3px 0";
+
+  }
+
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', onClick);
+  }
+</script>
+</html>

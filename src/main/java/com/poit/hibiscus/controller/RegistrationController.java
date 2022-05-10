@@ -11,14 +11,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/account/")
@@ -31,6 +25,7 @@ public class RegistrationController {
 
     @PostMapping("signup")
     public ResponseEntity<Void> signUp(@RequestBody UserDto userDto) {
+        //TODO: fix email duplicating bug
         User user = conversionService.convert(userDto, User.class);
         registrationService.saveUser(user);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);

@@ -4,17 +4,17 @@ import com.poit.hibiscus.dto.AccountDto;
 import com.poit.hibiscus.entity.CardAccount;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import org.springframework.core.convert.converter.Converter;
 
 @Component
 @AllArgsConstructor
-public class AccountDtoToCardAccountConverter implements Converter<AccountDto, CardAccount> {
+public class AccountToAccountDtoConverter implements Converter<CardAccount, AccountDto> {
 
     private final ModelMapper modelMapper;
 
     @Override
-    public CardAccount convert(AccountDto source) {
-        return modelMapper.map(source, CardAccount.class);
+    public AccountDto convert(CardAccount source) {
+        return modelMapper.map(source, AccountDto.class);
     }
 }

@@ -1,5 +1,7 @@
 package com.poit.hibiscus.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +24,7 @@ public class Credit {
     private Long id;
 
     @Column(name = "issuance_date")
-    private Timestamp issuanceDate;
+    private LocalDateTime issuanceDate;
 
     @OneToOne
     @JoinColumn(name = "passport_id")

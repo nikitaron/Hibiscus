@@ -1,9 +1,7 @@
 package com.poit.hibiscus.service.impl;
 
 import com.poit.hibiscus.entity.Card;
-import com.poit.hibiscus.entity.CardAccount;
 import com.poit.hibiscus.repository.CardRepository;
-import com.poit.hibiscus.service.AccountService;
 import com.poit.hibiscus.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

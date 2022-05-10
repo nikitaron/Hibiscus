@@ -1,0 +1,80 @@
+<html>
+<head>
+  <title>Creative Colorlib SignUp Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link href="../static/style/signupStyle.css" th:href="@{/style/signupStyle.css}" rel="stylesheet"
+        type="text/css" media="all"/>
+  <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+</head>
+<body>
+<div class="main-w3layouts wrapper">
+  <h1>Attach your passport</h1>
+  <div class="main-agileinfo">
+    <div class="agileits-top">
+      <form id="passportForm" method="post">
+        <input class="text" type="text" name="identityCode" placeholder="Identity code" required="">
+        <input class="text" type="text" name="dateOfBirth" placeholder="Date of birth" required="">
+        <input class="text" type="text" name="name" placeholder="First name" required="">
+        <input class="text" type="text" name="surname" placeholder="Last name" required="">
+        <input class="text" type="text" name="succession" placeholder="Succession" required="">
+        <input type="submit" value="CONFIRM">
+      </form>
+    </div>
+  </div>
+  <ul class="colorlib-bubbles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</div>
+<script type="application/x-javascript">
+  addEventListener("load", function () {
+    setTimeout(hideURLbar, 0);
+  }, false);
+
+  function hideURLbar() {
+    window.scrollTo(0, 1);
+  }
+
+  function handleConfirm(event) {
+    event.preventDefault();
+    var passport = {};
+    passport.identityCode = document.querySelector('input[name="identityCode"]').value;
+    passport.dateOfBirth = document.querySelector('input[name="dateOfBirth"]').value;
+
+    var sns = {};
+    sns.name = document.querySelector('input[name="name"]').value;
+    sns.surname = document.querySelector('input[name="surname"]').value;
+    sns.succession = document.querySelector('input[name="succession"]').value;
+
+    passport.sns = sns;
+
+    console.log(JSON.stringify(passport));
+
+    try {
+      fetch("/api/v1/account/passport", {
+        method: 'POST',
+        body: JSON.stringify(passport),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    } catch (error) {
+      console.error('Ошибка:', error);
+    }
+  }
+
+  const form = document.querySelector("#passportForm");
+  form.addEventListener('submit', handleConfirm);
+
+</script>
+</body>
+</html>

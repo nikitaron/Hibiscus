@@ -22,16 +22,16 @@ public class AccountController {
     private final UserService userService;
 
     @PostMapping("new")
-    public ResponseEntity<CardAccount> createAccount(@RequestBody AccountDto accountDto,
+    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto,
                                                      @AuthenticationPrincipal UserDetails userDetails) {
 
         return new ResponseEntity<>(
+            conversionService.convert(
                 accountService.createAccount(
-                        conversionService.convert(accountDto, CardAccount.class),
-                        userService.findUserByEmail(userDetails.getUsername()).getId()
-                ),
-                HttpStatus.CREATED
-        );
+                    conversionService.convert(accountDto, CardAccount.class),
+                    userService.findUserByEmail(userDetails.getUsername()).getId()),
+                AccountDto.class),
+            HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")

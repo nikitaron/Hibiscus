@@ -26,9 +26,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
+                    .antMatchers(HttpMethod.GET,"/signup", "/signin").anonymous()
+                    .mvcMatchers("/signUp", "/signIn").anonymous()
+                    .mvcMatchers("/style/signupStyle.css").permitAll()
                     .anyRequest().authenticated()
             .and()
-                .httpBasic();
+                .formLogin()
+                .loginPage("/signin")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/mainPage")
+                .failureForwardUrl("/signin")
+                .permitAll();
     }
 
     @Override
