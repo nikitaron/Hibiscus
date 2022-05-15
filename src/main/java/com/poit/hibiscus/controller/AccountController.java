@@ -4,6 +4,8 @@ import com.poit.hibiscus.dto.AccountDto;
 import com.poit.hibiscus.entity.CardAccount;
 import com.poit.hibiscus.service.AccountService;
 import com.poit.hibiscus.service.UserService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,7 @@ public class AccountController {
 
     @PostMapping("new")
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto,
-                                                     @AuthenticationPrincipal UserDetails userDetails) {
+        @AuthenticationPrincipal UserDetails userDetails) {
 
         return new ResponseEntity<>(
             conversionService.convert(
@@ -32,6 +34,26 @@ public class AccountController {
                     userService.findUserByEmail(userDetails.getUsername()).getId()),
                 AccountDto.class),
             HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AccountDto>> getAccounts() {
+        return new ResponseEntity<>(
+            accountService.getAll().stream()
+                .map(a -> conversionService.convert(a, AccountDto.class))
+                .collect(Collectors.toList()),
+            HttpStatus.OK);
+    }
+
+    @GetMapping("user-attached")
+    public ResponseEntity<List<AccountDto>> getAttachedAccounts(
+        @AuthenticationPrincipal UserDetails userDetails) {
+        return new ResponseEntity<>(accountService.getAccountsByUserId(
+                userService.findUserByEmail(userDetails.getUsername()).getId())
+                .stream()
+                    .map(a -> conversionService.convert(a, AccountDto.class))
+                    .collect(Collectors.toList()),
+            HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

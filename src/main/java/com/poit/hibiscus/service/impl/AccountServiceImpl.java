@@ -5,6 +5,7 @@ import com.poit.hibiscus.entity.CardAccount;
 import com.poit.hibiscus.entity.CurrencyType;
 import com.poit.hibiscus.repository.AccountRepository;
 import com.poit.hibiscus.service.AccountService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public CardAccount findByIban(String iban) {
         return accountRepository.findByIban(iban).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public List<CardAccount> getAccountsByUserId(Long id) {
+        return accountRepository.findByUserId(id);
+    }
+
+    @Override
+    public List<CardAccount> getAll() {
+        return accountRepository.findAll();
     }
 
 

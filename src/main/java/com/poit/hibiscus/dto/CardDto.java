@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Data
 @AllArgsConstructor
@@ -24,6 +25,6 @@ public class CardDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String cvv;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(iso = ISO.DATE_TIME)
     private LocalDateTime expirationTime;
 }

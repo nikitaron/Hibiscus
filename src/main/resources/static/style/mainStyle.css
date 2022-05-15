@@ -82,6 +82,9 @@ h1 {
 .panel {
   min-width: 85vw;
   min-height: 85vh;
+  max-width: 85vw;
+  max-height: 85vh;
+  overflow: auto;
 }
 
 .panel p {
@@ -104,7 +107,7 @@ h1 {
   padding: 0.9em;
   -webkit-appearance: none;
   margin: auto;
-  display: block;
+  display: flex;
   letter-spacing: 4px;
   -webkit-transition: .5s all;
   -moz-transition: .5s all;
@@ -116,4 +119,132 @@ h1 {
 .panel button:hover {
   color: #ffffff;
   background: #8DC26F;
+}
+
+.create-account button {
+  display: inline;
+  margin: auto auto auto 0;
+}
+
+select {
+  font-size: .9em;
+  color: #000000;
+  background: #ffffff;
+  outline: none;
+  border: 2px solid #76b852;
+  cursor: pointer;
+  padding: 0.9em;
+  letter-spacing: 4px;
+  display: inline;
+  margin: auto 0 auto auto;
+  transition: .5s all;
+}
+
+.create-account {
+  margin: auto auto 20px;
+  display: flex;
+}
+
+.account-holder {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+  min-width: 83vw;
+  min-height: 50vh;
+  max-width: 83vw;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.account-elem {
+  margin: auto auto 20px;
+  background: linear-gradient(to left, #ffbb88, #ffbb66);
+  display: block;
+  border-radius: 20px;
+  overflow: auto;
+  width: 30vw;
+  height: 20vh;
+  min-width: 30vw;
+  min-height: 20vh;
+}
+
+.account-elem p {
+  font-size: 1em;
+  text-align: left;
+  margin-left: 10px;
+  color: #ffffff;
+  font-weight: 1000;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.money-wrapper {
+  display: flex;
+}
+
+.create-card {
+  margin: auto auto 20px;
+  display: flex;
+}
+
+.create-card button {
+  display: inline;
+  margin: auto auto auto 0;
+}
+
+.card-holder {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+  min-width: 83vw;
+  min-height: 50vh;
+  max-width: 83vw;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-elem {
+  margin: auto auto 20px;
+  background: linear-gradient(to left, #6669ff, #2d3fad);
+  display: block;
+  position: relative;
+  border-radius: 20px;
+  overflow: auto;
+  width: 30vw;
+  height: 20vh;
+  min-width: 30vw;
+  min-height: 20vh;
+}
+
+.card-elem p {
+  font-size: 1em;
+  text-align: center;
+  margin-left: 10px;
+  color: #ffffff;
+  font-weight: 1000;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.card-back {
+  width: inherit;
+  height: inherit;
+  visibility: hidden;
+  position: absolute;
+}
+
+.card-front {
+  width: inherit;
+  height: inherit;
+  position: absolute;
+}
+
+.card-elem:hover .card-front {
+  visibility: hidden;
+}
+
+.card-elem:hover .card-back {
+  visibility: visible;
 }
