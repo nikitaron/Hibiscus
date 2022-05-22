@@ -37,6 +37,9 @@ public class Transaction {
     @Column(name = "currency_type")
     private CurrencyType currencyType;
 
+    @JoinColumn(name = "card_id")
+    private Long cardId;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

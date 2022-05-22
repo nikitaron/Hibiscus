@@ -82,38 +82,38 @@
     <div class="panel">
       <h1 id="accounts">Accounts</h1>
       <div class="account-holder">
-        <div class="account-elem">
-          <p>BY24123460155370855121674281</p>
-          <p>5370855121674281</p>
-          <div class="money-wrapper">
-            <p>0</p>
-            <p>USD</p>
-          </div>
-        </div>
-        <div class="account-elem">
-          <p>BY24123460155370855121674281</p>
-          <p>5370855121674281</p>
-          <div class="money-wrapper">
-            <p>0</p>
-            <p>USD</p>
-          </div>
-        </div>
-        <div class="account-elem">
-          <p>BY24123460155370855121674281</p>
-          <p>5370855121674281</p>
-          <div class="money-wrapper">
-            <p>0</p>
-            <p>USD</p>
-          </div>
-        </div>
-        <div class="account-elem">
-          <p>BY24123460155370855121674281</p>
-          <p>5370855121674281</p>
-          <div class="money-wrapper">
-            <p>0</p>
-            <p>USD</p>
-          </div>
-        </div>
+<!--        <div class="account-elem">-->
+<!--          <p>BY24123460155370855121674281</p>-->
+<!--          <p>5370855121674281</p>-->
+<!--          <div class="money-wrapper">-->
+<!--            <p>0</p>-->
+<!--            <p>USD</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="account-elem">-->
+<!--          <p>BY24123460155370855121674281</p>-->
+<!--          <p>5370855121674281</p>-->
+<!--          <div class="money-wrapper">-->
+<!--            <p>0</p>-->
+<!--            <p>USD</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="account-elem">-->
+<!--          <p>BY24123460155370855121674281</p>-->
+<!--          <p>5370855121674281</p>-->
+<!--          <div class="money-wrapper">-->
+<!--            <p>0</p>-->
+<!--            <p>USD</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="account-elem">-->
+<!--          <p>BY24123460155370855121674281</p>-->
+<!--          <p>5370855121674281</p>-->
+<!--          <div class="money-wrapper">-->
+<!--            <p>0</p>-->
+<!--            <p>USD</p>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
       <div class="create-account">
         <select>
@@ -133,6 +133,16 @@
     </div>
     <div class="panel">
       <h1 id="transactions">Transactions</h1>
+      <div class="send-transaction">
+        <input type="text" id="dest-card-num" name="dest" placeholder="Destination card">
+        <input type="text" id="amount" name="amount" placeholder="Amount">
+        <button id="create-transaction-button">SEND</button>
+      </div>
+      <div class="transaction-holder">
+        <p>01-04-2022 30-03-2022 684289O/0000071 Покупка/оплата/перевод - PT KOFEJNYA N2 - MINSK BYN     </p>
+        <p>01-04-2022 31-03-2022 3389900/0000070 Покупка/оплата/перевод - PAV. N73 BAPB - MINSK BYN      </p>
+        <p>03-04-2022 01-04-2022 2379911/0000013 Пополнение счета наличными (по ПК) - INFOKIOSK 02379 CAS</p>
+      </div>
     </div>
   </div>
 </div>
@@ -143,6 +153,8 @@
   const menuElements = document.getElementsByClassName("menu-link");
   var accountElements;
   var targetAccount;
+  var cardElements;
+  var targetCard;
 
   fetch("/api/v1/users/passport")
   .then(data => data.json())
@@ -226,7 +238,6 @@
     .then(response => response.json())
     .then(json => createAccountVisual(json))
     .then(() => accountElements = document.getElementsByClassName("account-elem"))
-    .then(() => console.log(accountElements));
   }
 
   function displayAccounts() {
@@ -256,6 +267,24 @@
       targetAccount.style.borderStyle = "none";
       targetAccount.style.borderWidth = "0";
       targetAccount = undefined;
+    }
+  }
+
+  function onCardPick(event) {
+    targetCard = event.currentTarget;
+    if (!(targetCard.style.borderStyle === "solid")) {
+      for (let i = 0; i < accountElements.length; i++) {
+        accountElements[i].style.borderStyle = "none";
+        accountElements[i].style.borderWidth = "0";
+      }
+
+      targetCard.style.borderColor = "black";
+      targetCard.style.borderStyle = "solid";
+      targetCard.style.borderWidth = "2px";
+    } else {
+      targetCard.style.borderStyle = "none";
+      targetCard.style.borderWidth = "0";
+      targetCard = undefined;
     }
   }
 
@@ -291,6 +320,41 @@
     cardHolder.append(cardView);
   }
 
+  function sendMoney() {
+    const data = {};
+    const transaction = {};
+    if (targetCard) {
+      transaction.toAccount = document.getElementById("dest-card-num").value;
+      transaction.amount = document.getElementById("amount").value;
+      data.number = targetCard.firstChild.firstChild.innerHTML;
+
+      fetch('api/v1/transactions/new', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    }
+
+  }
+
+  function createTransactionVisual(transactionInfo) {
+    let transactionHolder = document.querySelector(".transaction-holder");
+    let transactionView = document.createElement("p");
+    transactionView.innerHTML = transactionInfo.transactionTime + " TO "
+        + transactionInfo.toAccount + " "
+        + transactionInfo.amount
+        + transactionInfo.currencyType;
+    transactionHolder.append(transactionView);
+  }
+
+  function displayTransactions() {
+    document.querySelector(".transaction-holder").innerHTML = "";
+    fetch('api/v1/transactions')
+    .then(data => data.json())
+    .then(json => json.forEach(t => createTransactionVisual(t)));
+  }
   function createCard() {
     const data = {};
     const account = {};
@@ -330,8 +394,10 @@
       const accHolder = document.querySelector(".card-holder");
       accHolder.innerHTML = "";
       json.forEach(element => createCardVisual(element));
-    });
+    })
+    .then(() => cardElements = document.getElementsByClassName("card-elem"));
   }
+
 
   accountElements = document.getElementsByClassName("account-elem");
 

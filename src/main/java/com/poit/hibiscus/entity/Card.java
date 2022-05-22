@@ -1,5 +1,7 @@
 package com.poit.hibiscus.entity;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,4 +39,8 @@ public class Card {
 
     @Column(name = "account_id")
     private Long accountId;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "card_id")
+    private Set<Transaction> transactions  = new HashSet<>();;
 }

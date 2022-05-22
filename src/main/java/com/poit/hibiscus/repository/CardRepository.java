@@ -15,4 +15,5 @@ import javax.transaction.Transactional;
 public interface CardRepository extends JpaRepository<Card, Long> {
 
     List<Card> getAllByUserId(Long id);
+    Card getCardByNumber(String num);
 }

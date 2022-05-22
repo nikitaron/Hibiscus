@@ -42,4 +42,12 @@ public class CardAccount {
 
     @Column(name = "user_id")
     private Long userId;
+
+    public void addMoney(BigDecimal amount) {
+        money = money.add(amount);
+    }
+
+    public void subMoney(BigDecimal amount) {
+        money = money.subtract(amount);
+    }
 }

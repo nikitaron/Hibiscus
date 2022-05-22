@@ -2,17 +2,19 @@ package com.poit.hibiscus.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountCardWrapper {
-    @JsonProperty("accountDto")
-    private AccountDto accountDto;
+public class CardTransactionWrapper {
 
-    @JsonProperty("cardDto")
-    private CardDto cardDto;
+    @JsonProperty("number")
+    private String cardNumber;
+
+    @JsonProperty("transactionDto")
+    private TransactionDto transactionDto;
+
+
 }
