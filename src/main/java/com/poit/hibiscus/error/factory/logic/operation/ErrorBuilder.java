@@ -12,7 +12,7 @@ public class ErrorBuilder<T extends RuntimeException> implements IErrorBuilder<T
     private final ErrorResolver errorResolver;
 
     @Override
-    public ErrorResponse build(T e) throws NoSuchMethodException {
+    public ErrorResponse build(T e) {
         var stackTraceElement = e.getStackTrace()[0];
 
         try {
@@ -28,8 +28,8 @@ public class ErrorBuilder<T extends RuntimeException> implements IErrorBuilder<T
                     .message(e.getMessage())
                     .httpStatus(status)
                     .build();
-        } catch (ClassNotFoundException cnfe) {
-            throw new RuntimeException("Declared class not found");
+        } catch (ClassNotFoundException | NoSuchMethodException cnfe) {
+            throw new RuntimeException("Declared class or method not found");
         }
     }
 }
