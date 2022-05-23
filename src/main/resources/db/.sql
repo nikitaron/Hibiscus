@@ -30,7 +30,7 @@ CREATE TABLE if not exists card_accounts
     money         DECIMAL     NOT NULL,
     iban          VARCHAR(28) NOT NULL,
     number        VARCHAR(15) NOT NULL,
-    currency_type currency    NOT NULL
+    currency_type VARCHAR(10)    NOT NULL
 );
 
 CREATE TABLE if not exists cards
