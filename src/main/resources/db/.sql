@@ -64,11 +64,32 @@ CREATE TABLE if not exists credits
     passport_id   BIGINT     NOT NULL UNIQUE,
     FOREIGN KEY (passport_id) REFERENCES passports (id)
 );
-CREATE TABLE if not exists transactions
-(
-    id               BIGSERIAL PRIMARY KEY,
-    transaction_time TIMESTAMP DEFAULT (current_timestamp),
-    to_account       VARCHAR(15) NOT NULL,
-    amount           DECIMAL     NOT NULL,
-    currency_type    VARCHAR(4)  NOT NULL
+
+CREATE TYPE currency_type AS ENUM (
+    'EUR',
+    'USD',
+    'RUB',
+    'BYN'
+);
+
+CREATE TABLE IF NOT EXISTS account_transaction(
+    id              UUID DEFAULT md5(random()::text || clock_timestamp()::text)::uuid NOT NULL UNIQUE,
+    from_account_id    BIGINT  NOT NULL,
+    to_account_id      BIGINT  NOT NULL,
+    amount          NUMERIC(10, 3) NOT NULL,
+    currency        currency_type NOT NULL,
+    being_at        TIMESTAMP DEFAULT now(),
+    FOREIGN KEY (from_account_id) REFERENCES card_accounts(id),
+    FOREIGN KEY (to_account_id) REFERENCES card_accounts(id)
+);
+
+CREATE TABLE IF NOT EXISTS card_transaction(
+    id              UUID DEFAULT md5(random()::text || clock_timestamp()::text)::uuid NOT NULL UNIQUE,
+    from_card_id         BIGINT  NOT NULL,
+    to_card_id             BIGINT  NOT NULL,
+    amount          NUMERIC(10, 3) NOT NULL,
+    currency        currency_type NOT NULL,
+    being_at        TIMESTAMP DEFAULT now(),
+    FOREIGN KEY (from_card_id) REFERENCES cards(id),
+    FOREIGN KEY (to_card_id) REFERENCES cards(id)
 );
