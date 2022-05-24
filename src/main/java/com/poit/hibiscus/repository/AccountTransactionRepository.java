@@ -13,11 +13,11 @@ import java.util.UUID;
 
 public interface AccountTransactionRepository extends JpaRepository<Transactions.AccountTransaction, UUID> {
 
-    @Modifying
+/*    @Modifying
     @Query("""
             
             """)
     void executeTransaction(@Param("fromAccount") CardAccount cardAccount,
                             @Param("toAccount") CardAccount toAccount,
-                            @Param("amount") BigDecimal amount);
+                            @Param("amount") BigDecimal amount);*/
 }

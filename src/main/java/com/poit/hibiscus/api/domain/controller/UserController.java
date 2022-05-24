@@ -1,4 +1,4 @@
-package com.poit.hibiscus.controller;
+package com.poit.hibiscus.api.domain.controller;
 
 import com.poit.hibiscus.dto.PassportDto;
 import com.poit.hibiscus.entity.User;

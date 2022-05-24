@@ -1,4 +1,4 @@
-package com.poit.hibiscus.controller;
+package com.poit.hibiscus.api.domain.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
