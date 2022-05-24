@@ -27,4 +27,9 @@ public class LayoutController {
     public String getMainPage() {
         return "mainPage";
     }
+
+    @GetMapping("fail-login")
+    public String onLoginFail() {
+        return "failLogin";
+    }
 }

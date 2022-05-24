@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -30,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
             .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
-                .antMatchers(HttpMethod.GET,"/signup", "/signin").anonymous()
+                .antMatchers(HttpMethod.GET,"/signup", "/signin", "/fail-login").anonymous()
                 .mvcMatchers("/signUp", "/signIn").anonymous()
                 .mvcMatchers("/style/signupStyle.css").permitAll()
                 .anyRequest().authenticated()
@@ -40,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/main-page")
-                .failureForwardUrl("/signin")
+                .failureUrl("/fail-login")
                 .permitAll()
             .and()
                 .logout()
@@ -52,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/signin")
             .and()
                 .rememberMe()
+                .key("uniqueAndSecret")
+                .userDetailsService(userDetailsService)
             .and()
                 .sessionManagement()
                 .maximumSessions(1)
