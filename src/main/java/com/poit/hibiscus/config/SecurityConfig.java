@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -26,20 +27,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
-                    .antMatchers(HttpMethod.GET,"/signup", "/signin").anonymous()
-                    .mvcMatchers("/signUp", "/signIn").anonymous()
-                    .mvcMatchers("/style/signupStyle.css").permitAll()
-                    .anyRequest().authenticated()
+            .csrf()
+                .disable()
+            .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
+                .antMatchers(HttpMethod.GET,"/signup", "/signin", "/fail-login").anonymous()
+                .mvcMatchers("/signUp", "/signIn").anonymous()
+                .mvcMatchers("/style/signupStyle.css").permitAll()
+                .anyRequest().authenticated()
             .and()
                 .formLogin()
                 .loginPage("/signin")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/mainPage")
-                .failureForwardUrl("/signin")
+                .defaultSuccessUrl("/main-page")
+                .failureUrl("/fail-login")
                 .permitAll()
             .and()
                 .logout()
@@ -50,7 +52,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .deleteCookies("JSESSIONID")
                     .logoutSuccessUrl("/signin")
             .and()
-                .rememberMe();
+                .rememberMe()
+                .key("uniqueAndSecret")
+                .userDetailsService(userDetailsService)
+            .and()
+                .sessionManagement()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(false);
     }
 
     @Override

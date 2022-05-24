@@ -9,25 +9,8 @@
   <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
 </head>
 <body>
-<div class="main-w3layouts wrapper">
-  <h1>Sign In</h1>
-  <div class="main-agileinfo">
-    <div class="agileits-top">
-      <form action="#" method="post">
-        <input class="text email" type="email" name="email" placeholder="Email" required="">
-        <input class="text" type="password" name="password" placeholder="Password" required="">
-        <div class="wthree-text">
-          <label class="anim">
-            <input type="checkbox" id="remember-me" name="remember-me" class="checkbox">
-            <span>Remember me</span>
-          </label>
-          <div class="clear"></div>
-        </div>
-        <input type="submit" value="SIGNIN">
-      </form>
-      <p>Don't have an Account? <a href="/signup"> Login Now!</a></p>
-    </div>
-  </div>
+<div class="main-w3layouts wrapper" style="height: 88vh">
+  <h1></h1>
   <ul class="colorlib-bubbles">
     <li></li>
     <li></li>
@@ -49,6 +32,16 @@
   function hideURLbar() {
     window.scrollTo(0, 1);
   }
+
+  window.onload = function() {
+    if (window.confirm('Wrong credits')) {
+      window.location.href = '/signin';
+    } else {
+      window.location.href = '/signup';
+    }
+  };
+
+
 </script>
 </body>
 </html>

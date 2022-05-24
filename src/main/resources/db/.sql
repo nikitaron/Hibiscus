@@ -20,7 +20,7 @@ CREATE TABLE if not exists users
     id          BIGSERIAL PRIMARY KEY,
     email       varchar(50) CHECK (users.email ~ '/^\\S+@\\S+\\.\\S+$/')
                                                  NOT NULL UNIQUE,
-    password    VARCHAR(255)                     NOT NULL,
+    password    VARCHAR(72)                      NOT NULL,
     passport_id BIGINT REFERENCES passports (id) NOT NULL
 );
 
