@@ -1,4 +1,4 @@
-package com.poit.hibiscus.controller;
+package com.poit.hibiscus.api.domain.controller;
 
 import com.poit.hibiscus.config.Logging;
 import com.poit.hibiscus.config.TransactionType;

@@ -1,4 +1,4 @@
-package com.poit.hibiscus.controller;
+package com.poit.hibiscus.api.domain.controller;
 
 import com.poit.hibiscus.dto.TransactionsDto;
 import com.poit.hibiscus.entity.Transactions;
@@ -17,19 +17,19 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/transaction")
+@RequestMapping("api/v1/transaction/")
 public class TransactionController {
     private final UserService userService;
     private final TransactionsService.AccountTransactionService transactionService;
     private final TransactionsService.CardTransactionService cardTransactionService;
     private final ConversionService conversionService;
 
-    @PostMapping
+    @PostMapping("card")
     public ResponseEntity<Void> cardTransaction(@RequestBody TransactionsDto.CardTransactionDto cardTransactionDto) {
         return ResponseEntity.noContent().build();
     }
 
-     @PostMapping
+     @PostMapping("account")
      public ResponseEntity<Void> accountTransaction(@AuthenticationPrincipal Principal principal,
                                                     @RequestBody TransactionsDto.AccountTransactionDto accountTransactionDto) {
         var userId = userService.findUserByEmail(principal.getName()).getId();
