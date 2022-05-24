@@ -28,13 +28,16 @@ public class CreditController {
     public ResponseEntity<CreditDto> createNewCredit(@RequestBody CreditDto creditDto,
         @AuthenticationPrincipal UserDetails userDetails) {
 
+        var creditInfo = conversionService.convert(creditDto, Credit.class);
+
+        var currentUser = userService.findUserByEmail(userDetails.getUsername());
+
+        var newCredit = creditService.saveNew(creditInfo, currentUser);
+
         return new ResponseEntity<>(
-            conversionService.convert(
-                creditService.saveNew(
-                    conversionService.convert(creditDto, Credit.class),
-                    userService.findUserByEmail(userDetails.getUsername())),
-                CreditDto.class),
-            HttpStatus.OK);
+            conversionService.convert(newCredit, CreditDto.class),
+            HttpStatus.OK
+        );
     }
 
     //TODO scheduler with notifications

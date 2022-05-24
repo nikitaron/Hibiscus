@@ -4,6 +4,7 @@ import com.poit.hibiscus.dto.AccountCardWrapper;
 import com.poit.hibiscus.dto.AccountDto;
 import com.poit.hibiscus.dto.CardDto;
 import com.poit.hibiscus.entity.Card;
+import com.poit.hibiscus.entity.CardAccount;
 import com.poit.hibiscus.service.AccountService;
 import com.poit.hibiscus.service.CardService;
 import com.poit.hibiscus.service.UserService;
@@ -36,14 +37,18 @@ public class CardController {
         @RequestBody AccountCardWrapper accountCardWrapper,
         @AuthenticationPrincipal UserDetails userDetails
     ) {
-        var card = conversionService.convert(accountCardWrapper.getCardDto(), Card.class);
-        var accountId = accountService.findByIban(accountCardWrapper.getAccountDto().getIban())
-            .getId();
+        var card =
+            conversionService.convert(accountCardWrapper.getCardDto(), Card.class);
+
+        var account =
+            accountService.findByIban(accountCardWrapper.getAccountDto().getIban());
+
         var userId = userService.findUserByEmail(userDetails.getUsername()).getId();
 
+        var newCard = cardService.createCard(card, account.getId(), userId);
+
         return new ResponseEntity<>(
-            conversionService
-                .convert(cardService.createCard(card, accountId, userId), CardDto.class),
+            conversionService.convert(newCard, CardDto.class),
             HttpStatus.CREATED
         );
     }
@@ -52,12 +57,14 @@ public class CardController {
     public ResponseEntity<List<CardDto>> getUserAttachedCards(
         @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return new ResponseEntity<>(
-            cardService
-                .getUserAttachedCards(userService.findUserByEmail(userDetails.getUsername()).getId())
-                .stream()
-                .map(c -> conversionService.convert(c, CardDto.class))
-                .collect(Collectors.toList()),
-            HttpStatus.OK);
+        var currentUser = userService.findUserByEmail(userDetails.getUsername());
+
+        var userAttachedCardDtos = cardService
+            .getUserAttachedCards(currentUser.getId())
+            .stream()
+            .map(c -> conversionService.convert(c, CardDto.class))
+            .collect(Collectors.toList());
+
+        return new ResponseEntity<>(userAttachedCardDtos, HttpStatus.OK);
     }
 }
