@@ -29,12 +29,14 @@ public class AccountController {
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto,
         @AuthenticationPrincipal UserDetails userDetails) {
 
+        var currentUser = userService.findUserByEmail(userDetails.getUsername());
+
+        var newAccount = accountService.createAccount(
+            conversionService.convert(accountDto, CardAccount.class), currentUser.getId()
+        );
+
         return new ResponseEntity<>(
-            conversionService.convert(
-                accountService.createAccount(
-                    conversionService.convert(accountDto, CardAccount.class),
-                    userService.findUserByEmail(userDetails.getUsername()).getId()),
-                AccountDto.class),
+            conversionService.convert(newAccount, AccountDto.class),
             HttpStatus.CREATED);
     }
 
@@ -50,11 +52,14 @@ public class AccountController {
     @GetMapping("user-attached")
     public ResponseEntity<List<AccountDto>> getAttachedAccounts(
         @AuthenticationPrincipal UserDetails userDetails) {
-        return new ResponseEntity<>(accountService.getAccountsByUserId(
-                userService.findUserByEmail(userDetails.getUsername()).getId())
-                .stream()
-                    .map(a -> conversionService.convert(a, AccountDto.class))
-                    .collect(Collectors.toList()),
+        var accounts =
+            accountService.getAccountsByUserId(
+                userService.findUserByEmail(userDetails.getUsername()).getId());
+
+        return new ResponseEntity<>(
+            accounts.stream()
+                .map(a -> conversionService.convert(a, AccountDto.class))
+                .collect(Collectors.toList()),
             HttpStatus.OK);
     }
 

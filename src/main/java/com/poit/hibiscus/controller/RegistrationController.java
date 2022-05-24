@@ -26,7 +26,7 @@ public class RegistrationController {
     @PostMapping("signup")
     public ResponseEntity<Void> signUp(@RequestBody UserDto userDto) {
         //TODO: fix email duplicating bug
-        User user = conversionService.convert(userDto, User.class);
+        var user = conversionService.convert(userDto, User.class);
         registrationService.saveUser(user);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
@@ -37,7 +37,9 @@ public class RegistrationController {
             @AuthenticationPrincipal UserDetails userDetails) {
 
         var passport = conversionService.convert(passportDto, Passport.class);
+
         registrationService.savePassport(passport);
+
         userService.updateUser(userDetails.getUsername(), passport);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);

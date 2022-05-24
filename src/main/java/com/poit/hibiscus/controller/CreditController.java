@@ -32,8 +32,14 @@ public class CreditController {
                 conversionService.convert(creditDto, Credit.class),
                 userService.findUserByEmail(userDetails.getUsername()));
 
+        var currentUser = userService.findUserByEmail(userDetails.getUsername());
+
+        var newCredit = creditService.saveNew(credit, currentUser);
+
         return new ResponseEntity<>(
-            conversionService.convert(credit, CreditDto.class), HttpStatus.OK);
+            conversionService.convert(newCredit, CreditDto.class),
+            HttpStatus.OK
+        );
     }
 
     //TODO scheduler with notifications
