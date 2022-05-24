@@ -149,23 +149,23 @@
   .then(passport => {
     const tempElem = document.querySelector("#mainp");
     let newElem = document.createElement('p');
-    newElem.innerHTML = passport.identityCode;
+    newElem.innerHTML = "Identity code: " + passport.identityCode;
     tempElem.after(newElem);
 
     newElem = document.createElement('p');
-    newElem.innerHTML = passport.dob;
+    newElem.innerHTML = "Date of birth: " + passport.dob.substring(0, 10);
     tempElem.after(newElem);
 
     newElem = document.createElement('p');
-    newElem.innerHTML = passport.sns.succession;
+    newElem.innerHTML = "Succession: " + passport.sns.succession;
     tempElem.after(newElem);
 
     newElem = document.createElement('p');
-    newElem.innerHTML = passport.sns.name;
+    newElem.innerHTML = "Name: " + passport.sns.name;
     tempElem.after(newElem);
 
     newElem = document.createElement('p');
-    newElem.innerHTML = passport.sns.surname;
+    newElem.innerHTML = "Surname: " + passport.sns.surname;
     tempElem.after(newElem);
   });
 

@@ -26,21 +26,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
-                .antMatchers("/test").anonymous()
-                .antMatchers("/api/v1/accounts/hello").anonymous()
-                    .antMatchers(HttpMethod.GET,"/signup", "/signin").anonymous()
-                    .mvcMatchers("/signUp", "/signIn").anonymous()
-                    .mvcMatchers("/style/signupStyle.css").permitAll()
-                    .anyRequest().authenticated()
+            .csrf()
+                .disable()
+            .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
+                .antMatchers(HttpMethod.GET,"/signup", "/signin").anonymous()
+                .mvcMatchers("/signUp", "/signIn").anonymous()
+                .mvcMatchers("/style/signupStyle.css").permitAll()
+                .anyRequest().authenticated()
             .and()
                 .formLogin()
                 .loginPage("/signin")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/mainPage")
+                .defaultSuccessUrl("/main-page")
                 .failureForwardUrl("/signin")
                 .permitAll()
             .and()
@@ -52,7 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .deleteCookies("JSESSIONID")
                     .logoutSuccessUrl("/signin")
             .and()
-                .rememberMe();
+                .rememberMe()
+            .and()
+                .sessionManagement()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(false);
     }
 
     @Override

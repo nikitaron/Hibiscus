@@ -53,7 +53,13 @@
           headers: {
             'Content-Type': 'application/json'
           }
-        }).then(() => window.location.href = '/passport-attachment');
+        }).then(response => {
+          if (response.status === 202) {
+            window.location.href = '/passport-attachment';
+          } else if (response.status > 299) {
+            alert("Registration goes wrong");
+          }
+        });
       } catch (error) {
         console.error('Ошибка:', error);
       }
