@@ -2,11 +2,11 @@ package com.poit.hibiscus.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
-import org.springframework.stereotype.Component;
 
-@ConfigurationProperties(prefix = "bank.rate")
+@ConstructorBinding
+@ConfigurationProperties(prefix = "bank")
 public class ClientProperties {
-    public static String URL;
-    public static String ENDPOINT;
-    public static String ACCESS_KEY;
+    public static String URL = "http://api.currencylayer.com";
+    public static String ENDPOINT = "/live";
+    public static String ACCESS_KEY = "3cb2148e7f1e0c00f2e85dc26d283925";
 }

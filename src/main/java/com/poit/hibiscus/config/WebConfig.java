@@ -1,5 +1,6 @@
 package com.poit.hibiscus.config;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,7 @@ public class WebConfig {
     @Primary
     public WebClient webClient() {
         return WebClient.builder()
-                .baseUrl("http://api.currencylayer.com")
+                .baseUrl(ClientProperties.URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }

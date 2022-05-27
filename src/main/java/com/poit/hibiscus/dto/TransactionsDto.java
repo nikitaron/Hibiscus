@@ -13,7 +13,8 @@ public class TransactionsDto {
                                      BigDecimal amount) {
     }
 
-    public record AccountTransactionDto(String toAccountNumber,
+    public record AccountTransactionDto(Long fromAccountId,
+                                        String toAccountNumber,
                                         BigDecimal amount) {
     }
 }
