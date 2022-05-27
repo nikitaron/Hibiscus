@@ -33,7 +33,7 @@ public class ErrorBuilder<T extends RuntimeException> implements IErrorBuilder<T
                     .httpStatus(status)
                     .build();
         } catch (ClassNotFoundException cnfe) {
-            throw new RuntimeException("Class or method is not found");
+            throw new RuntimeException("Class is not declared in class path");
         }
     }
 }
