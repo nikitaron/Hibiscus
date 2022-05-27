@@ -9,9 +9,12 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -35,12 +38,19 @@ public class CurrencyOperation {
                 .filter(s -> s.getKey().equals(CurrencyType.USDBYN) ||
                         s.getKey().equals(CurrencyType.USDRUB) ||
                         s.getKey().equals(CurrencyType.USDEUR))
-                .findFirst().ifPresent(s -> quotes.put(s.getKey(), s.getValue()))));
+                        .forEach(s -> quotes.put(s.getKey(), s.getValue()))));
 
         Thread.sleep(1000);
 
+        var sortedQuotes = quotes.entrySet().stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).collect(
+                Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (s1, s2) -> s2, HashMap::new));
+
         return Currency.builder()
-                .quotes(quotes)
+                .quotes(sortedQuotes)
                 .build();
     }
 }

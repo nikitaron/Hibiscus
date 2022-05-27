@@ -20,8 +20,8 @@ public class CurrencyClientImpl implements CurrencyClient {
         return webClient
                 .get()
                 .uri(uriBuilder ->
-                        uriBuilder.path("/live")
-                                .queryParam("access_key", "3cb2148e7f1e0c00f2e85dc26d283925")
+                        uriBuilder.path(ClientProperties.ENDPOINT)
+                                .queryParam("access_key", ClientProperties.ACCESS_KEY)
                                 .build()
                 )
                 .retrieve()

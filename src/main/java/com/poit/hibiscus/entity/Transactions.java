@@ -1,9 +1,6 @@
 package com.poit.hibiscus.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -16,6 +13,7 @@ public class Transactions {
 
     @Entity
     @Builder
+    @Getter
     @DynamicInsert
     @Table(name = "account_transaction")
     @NoArgsConstructor
@@ -53,6 +51,7 @@ public class Transactions {
 
     @Entity
     @Builder
+    @Getter
     @DynamicInsert
     @Table(name = "card_transaction")
     @NoArgsConstructor
