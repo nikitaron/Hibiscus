@@ -19,7 +19,9 @@ public class TransactionController {
     }
 
      @PostMapping("account")
-     public ResponseEntity<Void> accountTransaction(@RequestBody TransactionsDto.AccountTransactionDto accountTransactionDto) throws InterruptedException {
+     public ResponseEntity<Void> accountTransaction(
+         @RequestBody TransactionsDto.AccountTransactionDto accountTransactionDto
+     ) throws InterruptedException {
         transactionService.insert(
                 accountTransactionDto.fromAccountId(),
                 accountTransactionDto.toAccountNumber(),

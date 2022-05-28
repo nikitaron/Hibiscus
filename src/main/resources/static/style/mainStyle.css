@@ -140,6 +140,20 @@ select {
   transition: .5s all;
 }
 
+input[type=text] {
+  font-size: 1em;
+  color: #000000;
+  background: #ffffff;
+  outline: none;
+  border: 2px solid #76b852;
+  cursor: pointer;
+  padding: 0.9em;
+  letter-spacing: 4px;
+  display: inline;
+  margin: auto 0 auto auto;
+  transition: .5s all;
+}
+
 .create-account {
   margin: auto auto 20px;
   display: flex;
@@ -247,4 +261,59 @@ select {
 
 .card-elem:hover .card-back {
   visibility: visible;
+}
+
+.send-money {
+  margin: auto auto 20px auto;
+  display: block;
+}
+
+.send-money button {
+  width: 300px;
+  margin: 10px auto 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-money input[type=text] {
+  width: 300px;
+}
+
+.send-money-to-account {
+  display: flex;
+  margin: 1px;
+}
+
+.send-money-to-account button {
+  display: flex;
+  margin: 1px auto 1px 1px;
+}
+
+.send-money-to-card {
+  display: flex;
+  margin: 1px;
+}
+
+.send-money-to-card button{
+  display: flex;
+  margin: 1px auto 1px 1px;
+}
+.send-money-amount {
+  display: flex;
+}
+
+.send-money-amount input[type=text] {
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.transaction-holder p {
+  font-size: 1em;
+  text-align: center;
+  color: #000000;
+  font-weight: 300;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-family: 'Roboto', sans-serif;
 }
