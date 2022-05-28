@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface AccountTransactionRepository extends JpaRepository<Transactions.AccountTransaction, UUID> {
@@ -18,8 +17,7 @@ public interface AccountTransactionRepository extends JpaRepository<Transactions
                                    BigDecimal amount,
                                    String currencies);
 
-    @Query(
-            value = "SELECT id FROM card_accounts WHERE number = :number",
-            nativeQuery = true)
+    @Query(value = "SELECT id FROM card_accounts WHERE number = :number",
+           nativeQuery = true)
     Long findAccountTransactionIdByNumber(@Param("number") String number);
 }
