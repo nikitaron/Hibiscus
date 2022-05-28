@@ -30,7 +30,7 @@ CREATE TABLE if not exists card_accounts
     money         DECIMAL     NOT NULL,
     iban          VARCHAR(28) NOT NULL,
     number        VARCHAR(15) NOT NULL,
-    currency_type VARCHAR(10)    NOT NULL
+    currency_type VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE if not exists cards
@@ -72,39 +72,43 @@ CREATE TYPE currency_type AS ENUM (
     'BYN'
 );
 
-CREATE TABLE IF NOT EXISTS account_transaction(
-    id              UUID DEFAULT md5(random()::text || clock_timestamp()::text)::uuid NOT NULL UNIQUE,
-    from_account_id    BIGINT  NOT NULL,
-    to_account_id      BIGINT  NOT NULL,
-    amount          NUMERIC(10, 3) NOT NULL,
-    currency        currency_type NOT NULL,
+CREATE TABLE IF NOT EXISTS account_transaction
+(
+    id              UUID      DEFAULT md5(random()::text || clock_timestamp()::text)::uuid NOT NULL UNIQUE,
+    from_account_id BIGINT                                                                 NOT NULL,
+    to_account_id   BIGINT                                                                 NOT NULL,
+    amount          NUMERIC(10, 3)                                                         NOT NULL,
+    currency        currency_type                                                          NOT NULL,
     being_at        TIMESTAMP DEFAULT now(),
-    FOREIGN KEY (from_account_id) REFERENCES card_accounts(id),
-    FOREIGN KEY (to_account_id) REFERENCES card_accounts(id)
+    FOREIGN KEY (from_account_id) REFERENCES card_accounts (id),
+    FOREIGN KEY (to_account_id) REFERENCES card_accounts (id)
 );
 
-CREATE TABLE IF NOT EXISTS card_transaction(
-    id              UUID DEFAULT md5(random()::text || clock_timestamp()::text)::uuid NOT NULL UNIQUE,
-    from_card_id         BIGINT  NOT NULL,
-    to_card_id             BIGINT  NOT NULL,
-    amount          NUMERIC(10, 3) NOT NULL,
-    currency        currency_type NOT NULL,
-    being_at        TIMESTAMP DEFAULT now(),
-    FOREIGN KEY (from_card_id) REFERENCES cards(id),
-    FOREIGN KEY (to_card_id) REFERENCES cards(id)
+CREATE TABLE IF NOT EXISTS card_transaction
+(
+    id           UUID      DEFAULT md5(random()::text || clock_timestamp()::text)::uuid NOT NULL UNIQUE,
+    from_card_id BIGINT                                                                 NOT NULL,
+    to_card_id   BIGINT                                                                 NOT NULL,
+    amount       NUMERIC(10, 3)                                                         NOT NULL,
+    currency     currency_type                                                          NOT NULL,
+    being_at     TIMESTAMP DEFAULT now(),
+    FOREIGN KEY (from_card_id) REFERENCES cards (id),
+    FOREIGN KEY (to_card_id) REFERENCES cards (id)
 );
 
 CREATE FUNCTION
-    made_account_transaction(to_account_id bigint, from_account_id bigint, amount numeric(10, 3), currencies varchar)
-    RETURNS boolean AS $$
+    made_account_transaction(to_account_id bigint, from_account_id bigint, amount numeric(10, 3),
+                             currencies varchar)
+    RETURNS boolean AS
+$$
 DECLARE
     from_account_currency_type currency_type;
-    to_account_currency_type currency_type;
-    from_account_currency   numeric(10, 3);
-    to_account_currency numeric(10, 3);
-    money_var numeric(10, 3);
-    temp_amount numeric(10, 3);
-    USD constant text := 'USD';
+    to_account_currency_type   currency_type;
+    from_account_currency      numeric(10, 3);
+    to_account_currency        numeric(10, 3);
+    money_var                  numeric(10, 3);
+    temp_amount                numeric(10, 3);
+    USD constant               text := 'USD';
 BEGIN
     SELECT money INTO money_var FROM card_accounts WHERE id = from_account_id;
 
@@ -114,7 +118,10 @@ BEGIN
         RAISE EXCEPTION 'Reflection transaction is not allowed' USING ERRCODE = 'P0001';
     END IF;
 
-    SELECT currency_type INTO from_account_currency_type FROM card_accounts WHERE id = from_account_id;
+    SELECT currency_type
+    INTO from_account_currency_type
+    FROM card_accounts
+    WHERE id = from_account_id;
     SELECT currency_type INTO to_account_currency_type FROM card_accounts WHERE id = to_account_id;
 
     IF from_account_currency_type = to_account_currency_type THEN
