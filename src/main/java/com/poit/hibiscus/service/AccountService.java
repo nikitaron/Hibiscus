@@ -2,6 +2,7 @@ package com.poit.hibiscus.service;
 
 import com.poit.hibiscus.entity.Card;
 import com.poit.hibiscus.entity.CardAccount;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AccountService {
@@ -11,4 +12,6 @@ public interface AccountService {
 
     List<CardAccount> getAccountsByUserId(Long id);
     List<CardAccount> getAll();
+
+    CardAccount addMoney(Long id, BigDecimal amount);
 }

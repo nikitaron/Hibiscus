@@ -4,6 +4,7 @@ import com.poit.hibiscus.dto.AccountDto;
 import com.poit.hibiscus.entity.CardAccount;
 import com.poit.hibiscus.service.AccountService;
 import com.poit.hibiscus.service.UserService;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -65,5 +66,14 @@ public class AccountController {
     public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id) {
         accountService.deleteAccount(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("money/{id}/{amount}")
+    public ResponseEntity<AccountDto> addMoney(
+        @PathVariable("id") Long id,
+        @PathVariable("amount") BigDecimal amount
+    ) {
+        var currentAccount = accountService.addMoney(id, amount);
+        return new ResponseEntity<>(conversionService.convert(currentAccount, AccountDto.class), HttpStatus.ACCEPTED);
     }
 }
