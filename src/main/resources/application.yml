@@ -7,7 +7,11 @@ server:
 
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/hibiscus_db
-    password: abc123
-    username: postgres
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/hibiscus_db
+    password: ${POSTGRES_PASSWORD}
+    username: ${POSTGRES_USERNAME}
+
+bank:
+    url: http://api.currencylayer.com
+    endpoint: /live
+    access_key: 3cb2148e7f1e0c00f2e85dc26d283925 #should be located in .env file but time.............

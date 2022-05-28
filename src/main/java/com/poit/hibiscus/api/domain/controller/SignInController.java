@@ -1,4 +1,4 @@
-package com.poit.hibiscus.controller;
+package com.poit.hibiscus.api.domain.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

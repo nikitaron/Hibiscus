@@ -64,11 +64,83 @@ CREATE TABLE if not exists credits
     passport_id   BIGINT     NOT NULL UNIQUE,
     FOREIGN KEY (passport_id) REFERENCES passports (id)
 );
-CREATE TABLE if not exists transactions
-(
-    id               BIGSERIAL PRIMARY KEY,
-    transaction_time TIMESTAMP DEFAULT (current_timestamp),
-    to_account       VARCHAR(15) NOT NULL,
-    amount           DECIMAL     NOT NULL,
-    currency_type    VARCHAR(4)  NOT NULL
+
+CREATE TYPE currency_type AS ENUM (
+    'EUR',
+    'USD',
+    'RUB',
+    'BYN'
 );
+
+CREATE TABLE IF NOT EXISTS account_transaction(
+    id              UUID DEFAULT md5(random()::text || clock_timestamp()::text)::uuid NOT NULL UNIQUE,
+    from_account_id    BIGINT  NOT NULL,
+    to_account_id      BIGINT  NOT NULL,
+    amount          NUMERIC(10, 3) NOT NULL,
+    currency        currency_type NOT NULL,
+    being_at        TIMESTAMP DEFAULT now(),
+    FOREIGN KEY (from_account_id) REFERENCES card_accounts(id),
+    FOREIGN KEY (to_account_id) REFERENCES card_accounts(id)
+);
+
+CREATE TABLE IF NOT EXISTS card_transaction(
+    id              UUID DEFAULT md5(random()::text || clock_timestamp()::text)::uuid NOT NULL UNIQUE,
+    from_card_id         BIGINT  NOT NULL,
+    to_card_id             BIGINT  NOT NULL,
+    amount          NUMERIC(10, 3) NOT NULL,
+    currency        currency_type NOT NULL,
+    being_at        TIMESTAMP DEFAULT now(),
+    FOREIGN KEY (from_card_id) REFERENCES cards(id),
+    FOREIGN KEY (to_card_id) REFERENCES cards(id)
+);
+
+CREATE FUNCTION
+    made_account_transaction(to_account_id bigint, from_account_id bigint, amount numeric(10, 3), currencies varchar)
+    RETURNS boolean AS $$
+DECLARE
+    from_account_currency_type currency_type;
+    to_account_currency_type currency_type;
+    from_account_currency   numeric(10, 3);
+    to_account_currency numeric(10, 3);
+    money_var numeric(10, 3);
+    temp_amount numeric(10, 3);
+    USD constant text := 'USD';
+BEGIN
+    SELECT money INTO money_var FROM card_accounts WHERE id = from_account_id;
+
+    IF money_var < amount OR amount < 0 THEN
+        RAISE EXCEPTION 'Not enough money to make a transaction in card' USING ERRCODE = 'P0001';
+    ELSEIF to_account_id = from_account_id THEN
+        RAISE EXCEPTION 'Reflection transaction is not allowed' USING ERRCODE = 'P0001';
+    END IF;
+
+    SELECT currency_type INTO from_account_currency_type FROM card_accounts WHERE id = from_account_id;
+    SELECT currency_type INTO to_account_currency_type FROM card_accounts WHERE id = to_account_id;
+
+    IF from_account_currency_type = to_account_currency_type THEN
+        UPDATE card_accounts SET money = @money + amount WHERE id = to_account_id;
+    ELSE
+        IF from_account_currency_type::text NOT LIKE USD THEN
+
+            SELECT value INTO from_account_currency
+            FROM (SELECT * FROM json_each(currencies::json)) AS "*2"
+            WHERE key LIKE concat('%', from_account_currency_type::text);
+
+            temp_amount := amount / from_account_currency;
+        END IF;
+
+        SELECT value INTO to_account_currency
+        FROM (SELECT * FROM json_each(currencies::json)) AS "*2"
+        WHERE key LIKE concat('%', to_account_currency_type::text);
+
+        temp_amount := temp_amount * to_account_currency;
+
+        UPDATE card_accounts SET money = @money + temp_amount WHERE id = to_account_id;
+    END IF;
+
+    UPDATE card_accounts SET money = @money - amount WHERE id = from_account_id;
+
+    RETURN true;
+END;
+$$ LANGUAGE plpgsql
+    SECURITY DEFINER;
