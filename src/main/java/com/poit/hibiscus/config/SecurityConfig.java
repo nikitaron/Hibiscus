@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/signup", "/signin", "/fail-login").anonymous()
                 .mvcMatchers("/signUp", "/signIn").anonymous()
                 .mvcMatchers("/style/signupStyle.css").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/accounts/**").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()

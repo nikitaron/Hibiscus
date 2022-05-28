@@ -58,5 +58,10 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAll();
     }
 
+    @Override
+    public CardAccount addMoney(Long id, BigDecimal amount) {
+        accountRepository.updateMoney(id, amount);
 
+        return accountRepository.getById(id);
+    }
 }
