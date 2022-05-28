@@ -133,9 +133,36 @@
     </div>
     <div class="panel">
       <h1 id="transactions">Transactions</h1>
+
+      <div class="send-money">
+        <div class="send-money-amount">
+          <input type="text" id="amount-of-money" placeholder="Amount">
+        </div>
+        <div class="info-wrapper">
+        <div class="send-money-to-account">
+          <input type="text" id="dest-account-num" placeholder="Account number">
+          <button id="send-to-account-button">SENDTOACCOUNT</button>
+        </div>
+        <div class="send-money-to-card">
+          <input type="text" id="dest-card-num" placeholder="Card number">
+          <button id="send-to-card-button">SENDTOCARD</button>
+        </div>
+        </div>
+      </div>
+      <div class="transaction-holder">
+        <p>01-04-2022 30-03-2022 684289O/0000071 Покупка/оплата/перевод - PT KOFEJNYA N2 - MINSK BYN     </p>
+        <p>01-04-2022 31-03-2022 3389900/0000070 Покупка/оплата/перевод - PAV. N73 BAPB - MINSK BYN      </p>
+        <p>03-04-2022 01-04-2022 2379911/0000013 Пополнение счета наличными (по ПК) - INFOKIOSK 02379 CAS</p>
+        <p>01-04-2022 30-03-2022 684289O/0000071 Покупка/оплата/перевод - PT KOFEJNYA N2 - MINSK BYN     </p>
+        <p>01-04-2022 31-03-2022 3389900/0000070 Покупка/оплата/перевод - PAV. N73 BAPB - MINSK BYN      </p>
+        <p>03-04-2022 01-04-2022 2379911/0000013 Пополнение счета наличными (по ПК) - INFOKIOSK 02379 CAS</p>
+        <p>01-04-2022 30-03-2022 684289O/0000071 Покупка/оплата/перевод - PT KOFEJNYA N2 - MINSK BYN     </p>
+        <p>01-04-2022 31-03-2022 3389900/0000070 Покупка/оплата/перевод - PAV. N73 BAPB - MINSK BYN      </p>
+      </div>
     </div>
   </div>
 </div>
 </body>
-<script type="text/javascript" src="../static/js/mainScript.js" th:src="@{/js/mainScript.js}"></script>
+<script type="text/javascript" src="../static/js/mainScript.js"
+        th:src="@{/js/mainScript.js}"></script>
 </html>

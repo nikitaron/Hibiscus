@@ -1,8 +1,10 @@
 displayCards();
 displayAccounts();
 const menuElements = document.getElementsByClassName("menu-link");
-var accountElements;
-var targetAccount;
+let accountElements;
+let targetAccount;
+let cardElements;
+let targetCard;
 
 fetch("/api/v1/users/passport")
 .then(data => data.json())
@@ -47,6 +49,11 @@ function createAccountVisual(element) {
   let accountView = document.createElement("div");
   accountView.classList.add("account-elem");
 
+  let id = document.createElement("p");
+  id.style.display = "none";
+  id.innerHTML = element.id;
+  accountView.append(id);
+
   let text = document.createElement("p");
   text.innerHTML = element.iban;
   accountView.append(text);
@@ -85,7 +92,8 @@ function createAccount() {
   })
   .then(response => response.json())
   .then(json => createAccountVisual(json))
-  .then(() => accountElements = document.getElementsByClassName("account-elem"));
+  .then(
+      () => accountElements = document.getElementsByClassName("account-elem"));
 }
 
 function displayAccounts() {
@@ -124,6 +132,11 @@ function createCardVisual(element) {
   let cardView = document.createElement("div");
   cardView.classList.add("card-elem");
 
+  let id = document.createElement("p");
+  id.style.display = "none";
+  id.innerHTML = element.id;
+  cardView.append(id);
+
   let cardViewFront = document.createElement("div");
   cardViewFront.classList.add("card-front");
 
@@ -148,6 +161,7 @@ function createCardVisual(element) {
 
   cardView.append(cardViewFront, cardViewBack);
   cardHolder.append(cardView);
+  cardView.addEventListener('click', onCardPick);
 }
 
 function createCard() {
@@ -156,11 +170,12 @@ function createCard() {
   const card = {};
 
   if (targetAccount) {
-    account.iban = targetAccount.firstChild.innerHTML;
+    account.iban = targetAccount.getElementsByTagName('p')[1].innerHTML;
     account.currencyType = "USD";
     let today = new Date();
     const selector = document.querySelector(".create-card select");
-    card.expirationTime = (today.getFullYear() + Number(selector.value.charAt(0)))
+    card.expirationTime = (today.getFullYear() + Number(
+            selector.value.charAt(0)))
         + '-0' + (today.getMonth() + 1)
         + '-' + today.getDate()
         + 'T00:00';
@@ -189,7 +204,64 @@ function displayCards() {
     const accHolder = document.querySelector(".card-holder");
     accHolder.innerHTML = "";
     json.forEach(element => createCardVisual(element));
-  });
+  })
+  .then(() => cardElements = document.getElementsByClassName("card-elem"));
+}
+
+function onCardPick(event) {
+  targetCard = event.currentTarget;
+  if (!(targetCard.style.borderStyle === "solid")) {
+    for (let i = 0; i < cardElements.length; i++) {
+      cardElements[i].style.borderStyle = "none";
+      cardElements[i].style.borderWidth = "0";
+    }
+
+    targetCard.style.borderColor = "black";
+    targetCard.style.borderStyle = "solid";
+    targetCard.style.borderWidth = "2px";
+  } else {
+    targetCard.style.borderStyle = "none";
+    targetCard.style.borderWidth = "0";
+    targetCard = undefined;
+  }
+}
+
+function sendMoneyFromAccount() {
+  const data = {};
+  if (targetAccount) {
+    data.fromAccountId = targetAccount.firstChild.innerHTML;
+    data.toAccountNumber = document.getElementById("dest-account-num").value;
+    data.amount = document.getElementById("amount-of-money").value;
+
+    fetch('api/v1/transaction/account', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }); // then и погнал чекать ошибки
+  } else {
+    alert('Please, choose an account');
+  }
+}
+
+function sendMoneyFromCard() {
+  const data = {};
+  if (targetCard) {
+    data.fromAccountId = targetCard.firstChild.innerHTML;
+    data.toCardNumber = document.getElementById("dest-card-num").value;
+    data.amount = document.getElementById("amount-of-money").value;
+
+    fetch('api/v1/transaction/card', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(r => r.json()); // then и погнал чекать ошибки
+  } else {
+    alert('Please, choose a card');
+  }
 }
 
 accountElements = document.getElementsByClassName("account-elem");
@@ -202,5 +274,11 @@ menuElements[0].style.borderBottomColor = "white";
 menuElements[0].style.borderStyle = "solid";
 menuElements[0].style.borderWidth = "0 0 3px 0";
 
-document.querySelector("#create-account-button").addEventListener('click', createAccount);
-document.querySelector("#create-card-button").addEventListener('click', createCard);
+document.querySelector("#send-to-account-button").addEventListener('click',
+    sendMoneyFromAccount);
+document.querySelector("#send-to-card-button").addEventListener('click',
+    sendMoneyFromCard);
+document.querySelector("#create-account-button").addEventListener('click',
+    createAccount);
+document.querySelector("#create-card-button").addEventListener('click',
+    createCard);
