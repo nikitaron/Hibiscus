@@ -15,6 +15,10 @@ public class TransactionController {
 
     @PostMapping("card")
     public ResponseEntity<Void> cardTransaction(@RequestBody TransactionsDto.CardTransactionDto cardTransactionDto) {
+        cardTransactionService.insert(
+                cardTransactionDto.fromCardId(),
+                cardTransactionDto.toCardNumber(),
+                cardTransactionDto.amount());
         return ResponseEntity.noContent().build();
     }
 
