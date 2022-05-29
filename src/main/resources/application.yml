@@ -5,8 +5,11 @@ server:
       persistent: false
 
 spring:
+  jpa:
+    show-sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/hibiscus_db
-    password: abc123
-    username: postgres
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/hibiscus_db
+    password: ${POSTGRES_PASSWORD}
+    username: ${POSTGRES_USERNAME}
+

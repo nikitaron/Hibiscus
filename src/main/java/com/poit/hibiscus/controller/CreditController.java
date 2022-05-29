@@ -26,15 +26,14 @@ public class CreditController {
 
     @PostMapping("new")
     public ResponseEntity<CreditDto> createNewCredit(@RequestBody CreditDto creditDto,
-        @AuthenticationPrincipal UserDetails userDetails) {
+                                                     @AuthenticationPrincipal UserDetails userDetails) {
+
+        var credit = creditService.saveNew(
+                conversionService.convert(creditDto, Credit.class),
+                userService.findUserByEmail(userDetails.getUsername()));
 
         return new ResponseEntity<>(
-            conversionService.convert(
-                creditService.saveNew(
-                    conversionService.convert(creditDto, Credit.class),
-                    userService.findUserByEmail(userDetails.getUsername())),
-                CreditDto.class),
-            HttpStatus.OK);
+            conversionService.convert(credit, CreditDto.class), HttpStatus.OK);
     }
 
     //TODO scheduler with notifications

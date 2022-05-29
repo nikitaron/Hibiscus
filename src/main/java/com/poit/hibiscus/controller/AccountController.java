@@ -1,5 +1,7 @@
 package com.poit.hibiscus.controller;
 
+import com.poit.hibiscus.config.Logging;
+import com.poit.hibiscus.config.TransactionType;
 import com.poit.hibiscus.dto.AccountDto;
 import com.poit.hibiscus.entity.CardAccount;
 import com.poit.hibiscus.service.AccountService;
@@ -60,5 +62,11 @@ public class AccountController {
     public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id) {
         accountService.deleteAccount(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Logging
+    @GetMapping("hello")
+    public ResponseEntity<Void> hello() {
+        return null;
     }
 }

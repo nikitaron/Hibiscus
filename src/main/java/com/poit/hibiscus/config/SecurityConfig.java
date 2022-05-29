@@ -27,6 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
+                .antMatchers("/test").anonymous()
+                .antMatchers("/api/v1/accounts/hello").anonymous()
                     .antMatchers(HttpMethod.GET,"/signup", "/signin").anonymous()
                     .mvcMatchers("/signUp", "/signIn").anonymous()
                     .mvcMatchers("/style/signupStyle.css").permitAll()
