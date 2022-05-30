@@ -65,8 +65,6 @@ public class AccountServiceImpl implements AccountService {
 
         return accountRepository.getById(id);
     }
-<<<<<<< HEAD
-
     @Override
     public Long findCardIdByCardNumber(String number) {
         return accountRepository.findAccountIdByAccountNumber(number);
@@ -76,6 +74,4 @@ public class AccountServiceImpl implements AccountService {
     public Currency findCurrencyById(Long id) {
         return accountRepository.findToAccountCurrencyById(id);
     }
-=======
->>>>>>> master
 }

@@ -4,6 +4,7 @@ import com.poit.hibiscus.api.domain.client.operation.CurrencyOperation;
 
 import com.poit.hibiscus.config.Transaction;
 
+import com.poit.hibiscus.config.TransactionType;
 import com.poit.hibiscus.error.factory.configuration.HandleError;
 import com.poit.hibiscus.error.factory.model.TransactionDeniedException;
 import com.poit.hibiscus.repository.AccountTransactionRepository;
@@ -26,7 +27,7 @@ public class AccountTransactionServiceImpl extends AbstractQuotesService impleme
 
     @Override
     @HandleError
-    @Transaction
+    @Transaction(type = TransactionType.ACCOUNT_TRANSFER)
     public void insert(Long fromAccountId, String toAccountNumber, BigDecimal amount) {
         Supplier<String, Long> supplier = accountTransactionRepository::findAccountTransactionIdByNumber;
 

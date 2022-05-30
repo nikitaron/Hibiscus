@@ -11,13 +11,18 @@ import java.util.UUID;
 
 public interface CardTransactionRepository extends JpaRepository<Transactions.CardTransaction, UUID> {
     @Procedure(procedureName = "made_account_transaction")
-    boolean madeAccountTransaction(long toCardId,
-                                   long fromCardId,
+    boolean madeAccountTransaction(long toAccountId,
+                                   long fromAccountId,
                                    BigDecimal amount,
                                    String currencies);
 
     @Query(value = """
-        SELECT id FROM cards WHERE number = :number
-        """, nativeQuery = true)
-    Long findCardIdByCardNumber(@Param("number") String number);
+                SELECT account_id FROM cards WHERE number = :number
+                    """, nativeQuery = true)
+    Long findAccountIdByNumber(@Param("number") String number);
+
+    @Query(value = """
+                SELECT account_id FROM cards WHERE id = :id
+                """, nativeQuery = true)
+    Long findAccountIdById(@Param("id") Long id);
 }

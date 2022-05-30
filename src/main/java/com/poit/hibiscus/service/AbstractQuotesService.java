@@ -18,6 +18,6 @@ public abstract class AbstractQuotesService {
 
     @FunctionalInterface
     protected interface Supplier<T, E> {
-        E getId(T number);
+        E getId(T t);
     }
 }

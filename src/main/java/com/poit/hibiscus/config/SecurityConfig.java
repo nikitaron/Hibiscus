@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/v1/account/signup").anonymous()
                 .antMatchers(HttpMethod.GET,"/signup", "/signin", "/fail-login").anonymous()
+                .antMatchers("/api/v1/transaction/card").anonymous()
                 .antMatchers("/api/v1/transaction/account").anonymous()
                 .mvcMatchers("/signUp", "/signIn").anonymous()
                 .mvcMatchers("/style/signupStyle.css").permitAll()
