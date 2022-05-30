@@ -26,7 +26,15 @@ public class CreditController {
 
     @PostMapping("new")
     public ResponseEntity<CreditDto> createNewCredit(@RequestBody CreditDto creditDto,
-        @AuthenticationPrincipal UserDetails userDetails) {
+                                                     @AuthenticationPrincipal UserDetails userDetails) {
+
+        var credit = creditService.saveNew(
+                conversionService.convert(creditDto, Credit.class),
+                userService.findUserByEmail(userDetails.getUsername()));
+
+        var currentUser = userService.findUserByEmail(userDetails.getUsername());
+
+        var newCredit = creditService.saveNew(credit, currentUser);
 
         var creditInfo = conversionService.convert(creditDto, Credit.class);
 

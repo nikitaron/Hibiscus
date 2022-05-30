@@ -34,4 +34,9 @@ public class CardServiceImpl implements CardService {
     public List<Card> getUserAttachedCards(Long id) {
         return cardRepository.getAllByUserId(id);
     }
+
+    @Override
+    public Long findCardIdByNumber(String number) {
+        return cardRepository.findCardIdByCardNumber(number);
+    }
 }
