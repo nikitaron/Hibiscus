@@ -36,6 +36,12 @@ public class CreditController {
 
         var newCredit = creditService.saveNew(credit, currentUser);
 
+        var creditInfo = conversionService.convert(creditDto, Credit.class);
+
+        var currentUser = userService.findUserByEmail(userDetails.getUsername());
+
+        var newCredit = creditService.saveNew(creditInfo, currentUser);
+
         return new ResponseEntity<>(
             conversionService.convert(newCredit, CreditDto.class),
             HttpStatus.OK
