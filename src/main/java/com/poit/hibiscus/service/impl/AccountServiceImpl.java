@@ -7,6 +7,7 @@ import com.poit.hibiscus.repository.AccountRepository;
 import com.poit.hibiscus.service.AccountService;
 
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -63,5 +64,15 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.updateMoney(id, amount);
 
         return accountRepository.getById(id);
+    }
+
+    @Override
+    public Long findCardIdByCardNumber(String number) {
+        return accountRepository.findAccountIdByAccountNumber(number);
+    }
+
+    @Override
+    public Currency findCurrencyById(Long id) {
+        return accountRepository.findToAccountCurrencyById(id);
     }
 }

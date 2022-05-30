@@ -9,16 +9,14 @@ import java.math.BigDecimal;
 
 public abstract class AbstractLoggerFactoryAspect {
 
-    public static final String POINTCUT = "loggingPointcut()";
-    public static final String LOGGING = "@annotation(com.poit.hibiscus.config.Logging)";
+    public static final String ACCOUNT_TRANSACTION = "@annotation(com.poit.hibiscus.config.Transaction) && args(fromAccountId, toAccountNumber, amount)";
+    public static final String CARD_TRANSACTION = "@annotation(com.poit.hibiscus.config.Transaction) && args(fromCardId, toCardNumber, amount)";
 
-    public abstract void loggingResolver(Object o);
+    public abstract void accountTransactionResolver(Long fromAccountId, String toAccountNumber, BigDecimal amount);
 
-    protected TransactionType getTransactionType(Class<?> clazz) {
-        return TransactionType.ACCOUNT_TRANSFER;
-    }
+    public abstract void cardTransactionResolver(Long fromCardId, String toCardNumber, BigDecimal amount);
 
     public abstract static class AbstractLoggerOperation {
-        public abstract void insert();
+        public abstract void insert(Long fromAccountId, String toAccountNumber, BigDecimal amount);
     }
 }
