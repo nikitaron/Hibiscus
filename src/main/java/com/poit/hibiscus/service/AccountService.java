@@ -3,10 +3,8 @@ package com.poit.hibiscus.service;
 import com.poit.hibiscus.entity.Card;
 import com.poit.hibiscus.entity.CardAccount;
 import java.math.BigDecimal;
-<<<<<<< HEAD
+
 import java.util.Currency;
-=======
->>>>>>> master
 import java.util.List;
 
 public interface AccountService {

@@ -2,10 +2,9 @@ package com.poit.hibiscus.service.impl;
 
 import com.google.gson.Gson;
 import com.poit.hibiscus.api.domain.client.operation.CurrencyOperation;
-<<<<<<< HEAD
+
 import com.poit.hibiscus.config.Transaction;
-=======
->>>>>>> master
+
 import com.poit.hibiscus.error.factory.configuration.HandleError;
 import com.poit.hibiscus.error.factory.model.TransactionDeniedException;
 import com.poit.hibiscus.repository.AccountTransactionRepository;

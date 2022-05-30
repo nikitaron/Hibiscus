@@ -2,10 +2,7 @@ package com.poit.hibiscus.repository;
 
 import com.poit.hibiscus.entity.CardAccount;
 import java.math.BigDecimal;
-<<<<<<< HEAD
 import java.util.Currency;
-=======
->>>>>>> master
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
